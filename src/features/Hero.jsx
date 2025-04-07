@@ -23,7 +23,7 @@ async function HeroSection() {
                 <p className="text-customGray text-[18px] mb-8 max-w-md">
                     {data.description}
                 </p>
-                <Button>BUY NOW</Button>
+                <Button className={'bg-[#B88E2F] rounded-none hover:bg-[#b88f2fc4]'}>BUY NOW</Button>
             </div>
         </section>
     );

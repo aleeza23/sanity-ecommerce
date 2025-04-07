@@ -5,7 +5,7 @@ async function Categories() {
     const data = await client.fetch(`*[_type == "category"] {title, "imageUrl" : image.asset->url}`)
     // console.log(data);
     return (
-        <section className="max-w-[90%] md:max-w-[80%] mx-auto">
+        <section className="max-w-[90%] md:max-w-[80%] mx-auto mt-24">
             <div>
                 <p className="text-[32px] font-bold text-center">Browse The Range</p>
                 <p className="text-lg text-customGray text-center">
