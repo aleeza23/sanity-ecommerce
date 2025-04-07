@@ -8,8 +8,8 @@ import { Button } from "../ui/button";
 import { client } from "@/sanity/lib/client";
 
 export default function ProductDetailShowcaseSection({ productId }) {
-    const [product, setProduct] = useState(null); // To store the fetched product data
-    const [isLoading, setIsLoading] = useState(true); // To handle loading state
+    const [product, setProduct] = useState(null); 
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -26,16 +26,16 @@ export default function ProductDetailShowcaseSection({ productId }) {
 
             try {
                 const data = await client.fetch(query, { productId });
-                setProduct(data); // Set the fetched product data to state
-                setIsLoading(false); // Set loading to false after data is fetched
+                setProduct(data); 
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching product:", error);
-                setIsLoading(false); // Stop loading on error
+                setIsLoading(false); 
             }
         };
 
-        fetchProduct(); // Call the fetch function
-    }, [productId]); // Re-fetch data when the productId changes
+        fetchProduct();
+    }, [productId]);
 
 
     const mini = [

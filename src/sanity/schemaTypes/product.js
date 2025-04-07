@@ -33,6 +33,12 @@ export default {
             type: 'number',
         },
         {
+            name: 'category',
+            title: 'Category',
+            type: 'reference',
+            to: [{ type: 'category' }],
+        },
+        {
             name: 'type',
             title: 'Type',
             type: 'string',
@@ -50,5 +56,6 @@ export default {
             title: 'Type Value',
             type: 'string',
         },
+
     ]
 }
