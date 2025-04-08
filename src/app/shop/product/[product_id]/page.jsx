@@ -1,8 +1,5 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
-// import ProductDetailExtraInfoSection from "@/components/sections/shop/product-detail/ProductDetailExtraInfoSection";
-// import ProductDetailRelatedSection from "@/components/sections/shop/product-detail/ProductDetailRelatedSection";
-// import ProductDetailTopSection from "@/components/sections/shop/product-detail/ProductDetailTopSection";
 import { Separator } from "@/components/ui/separator";
 import { Navbar } from "@/features/Navbar";
 import FooterSection from "@/features/Footer";
@@ -10,7 +7,7 @@ import ProductDetailShowcaseSection from "@/components/common/ProductDetailShowc
 
 
 export default function ProductDetailPage({ params }) {
-    const { product_id } = params;
+    const { product_id } = React.use(params);
 
     return (
         <>

@@ -6,10 +6,14 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { client } from "@/sanity/lib/client";
+import { useCartStore } from "@/store/cart-store";
 
 export default function ProductDetailShowcaseSection({ productId }) {
-    const [product, setProduct] = useState(null); 
+    const [product, setProduct] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const { cartItems, decreaseQty, increaseQty, addToCart } = useCartStore();
+    const cartItem = cartItems.find((item) => item._id === product._id);
+    const quantity = cartItem?.quantity || 0;
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -26,11 +30,11 @@ export default function ProductDetailShowcaseSection({ productId }) {
 
             try {
                 const data = await client.fetch(query, { productId });
-                setProduct(data); 
+                setProduct(data);
                 setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching product:", error);
-                setIsLoading(false); 
+                setIsLoading(false);
             }
         };
 
@@ -112,18 +116,20 @@ export default function ProductDetailShowcaseSection({ productId }) {
                         </PaginationContent>
                     </Pagination>
                 </div>
-                <div className="flex gap-[18px] items-center mt-12">
-                    <div className="inline-flex h-[64px] px-[15px] gap-[35px] items-center border border-customGray2 rounded-[10px]">
+                <div className="flex lg:flex-row flex-col gap-[18px] items-center mt-12">
+                    <div className="flex  h-[64px] px-[15px] gap-[35px] items-center border border-customGray2 rounded-[10px]">
                         <MinusIcon
                             className="cursor-pointer"
+                            onClick={() => decreaseQty(product._id)}
                         />
-                        <p className="font-semibold text-normal select-none">{1}</p>
+                        <p className="font-semibold text-normal select-none">{quantity}</p>
                         <PlusIcon
                             className="cursor-pointer"
+                            onClick={() => increaseQty(product._id)}
                         />
                     </div>
                     <div>
-                        <Button variant="outline" className={'border-black'}>Add to cart</Button>
+                        <Button onClick={() => addToCart(product)} variant="outline" className={'border-black cursor-pointer'}>Add to cart</Button>
                     </div>
                 </div>
                 <div className="my-[41px]">

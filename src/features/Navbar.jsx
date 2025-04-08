@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
 
 import {
@@ -24,6 +25,10 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import Cart from "@/components/common/Cart";
+import { useCartStore } from "@/store/cart-store";
+import { RemoveScroll } from 'react-remove-scroll';
 
 const Navbar = ({
 
@@ -67,75 +72,135 @@ const Navbar = ({
         login: { title: "Login", url: "#" },
         signup: { title: "Sign up", url: "#" },
     },
+
 }) => {
+    const [showCart, setShowCart] = useState(false);
+    const { cartItems } = useCartStore();
+
+
+    const icons = [
+        {
+            iconUrl: "/images/heart_icon.png",
+            alt: "heart icon",
+            action: () => console.log("You just clicked on the heart icon"),
+        },
+        {
+            iconUrl: "/images/cart_icon.png",
+            alt: "cart icon",
+            action: () => setShowCart(true),
+            badgeValue: cartItems.length
+        },
+    ];
+
     return (
-        <section className="py-4">
-            <div className=" max-w-[90%] md:max-w-[80%] mx-auto">
-                {/* Desktop Menu */}
-                <nav className="hidden justify-between lg:flex">
-                    <div className="flex items-center gap-6">
-                        <a href={'/'} className="flex items-center  gap-2">
-                            <Image src={'/logo.png'} alt="logo" width={130} height={130} />
-                        </a>
-                        <div className="flex items-center">
-                            <NavigationMenu>
-                                <NavigationMenuList>
-                                    {menu.map((item) => renderMenuItem(item))}
-                                </NavigationMenuList>
-                            </NavigationMenu>
+        <>
+            <section className="py-4">
+                <div className=" max-w-[90%] md:max-w-[80%] mx-auto">
+                    {/* Desktop Menu */}
+                    <nav className="hidden justify-between lg:flex">
+                        <div className="flex items-center gap-6">
+                            <a href={'/'} className="flex items-center  gap-2">
+                                <Image src={'/logo.png'} alt="logo" width={130} height={130} />
+                            </a>
+                            <div className="flex items-center">
+                                <NavigationMenu>
+                                    <NavigationMenuList>
+                                        {menu.map((item) => renderMenuItem(item))}
+                                    </NavigationMenuList>
+                                </NavigationMenu>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-[40px] select-none">
+                            {icons.map((icon, index) => (
+                                <div key={index} className="relative">
+                                    <img
+                                        src={icon.iconUrl}
+                                        onClick={icon.action}
+                                        alt={icon.alt}
+                                        className="cursor-pointer"
+                                    />
+                                    {icon?.badgeValue ? (
+                                        <Badge
+                                            variant="destructive"
+                                            className="absolute -top-3 -right-5"
+                                        >
+                                            {icon?.badgeValue}
+                                        </Badge>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </nav>
+
+                    {/* Mobile Menu */}
+                    <div className="block lg:hidden">
+                        <div className="flex items-center justify-between">
+                            <a href={'/'} className="flex items-center gap-2">
+                                <Image src={'/logo.png'} alt="logo" width={130} height={130} />
+
+                            </a>
+                            <div className="flex gap-8">
+                                <div className="flex items-center gap-4 select-none">
+                                    {icons.map((icon, index) => (
+                                        <div key={index} className="relative">
+                                            <img
+                                                src={icon.iconUrl}
+                                                onClick={icon.action}
+                                                alt={icon.alt}
+                                                className="cursor-pointer"
+                                            />
+                                            {icon?.badgeValue ? (
+                                                <Badge
+                                                    variant="destructive"
+                                                    className="absolute -top-3 -right-5"
+                                                >
+                                                    {icon?.badgeValue}
+                                                </Badge>
+                                            ) : (
+                                                <div></div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                                <Sheet>
+                                    <SheetTrigger asChild>
+                                        <Button variant="outline" size="icon">
+                                            <Menu className="size-4" />
+                                        </Button>
+                                    </SheetTrigger>
+                                    <SheetContent className="overflow-y-auto">
+                                        <SheetHeader>
+                                            <SheetTitle>
+                                                <a href={'/'} className="flex items-center gap-2">
+                                                    <Image src={'/logo.png'} alt="logo" width={130} height={130} />
+
+                                                </a>
+                                            </SheetTitle>
+                                        </SheetHeader>
+                                        <div className="flex flex-col gap-6 p-4">
+                                            <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
+                                                {menu.map((item) => renderMobileMenuItem(item))}
+                                            </Accordion>
+
+                                        </div>
+                                    </SheetContent>
+                                </Sheet>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex gap-2">
-                        <Button asChild variant="outline" size="sm">
-                            <a href={auth.login.url}>{auth.login.title}</a>
-                        </Button>
-                        <Button asChild size="sm">
-                            <a href={auth.signup.url}>{auth.signup.title}</a>
-                        </Button>
-                    </div>
-                </nav>
-
-                {/* Mobile Menu */}
-                <div className="block lg:hidden">
-                    <div className="flex items-center justify-between">
-                        <a href={'/'} className="flex items-center gap-2">
-                        <Image src={'/logo.png'} alt="logo" width={130} height={130} />
-
-                        </a>
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button variant="outline" size="icon">
-                                    <Menu className="size-4" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent className="overflow-y-auto">
-                                <SheetHeader>
-                                    <SheetTitle>
-                                        <a href={'/'} className="flex items-center gap-2">
-                                        <Image src={'/logo.png'} alt="logo" width={130} height={130} />
-
-                                        </a>
-                                    </SheetTitle>
-                                </SheetHeader>
-                                <div className="flex flex-col gap-6 p-4">
-                                    <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
-                                        {menu.map((item) => renderMobileMenuItem(item))}
-                                    </Accordion>
-                                    <div className="flex flex-col gap-3">
-                                        <Button asChild variant="outline">
-                                            <a href={auth.login.url}>{auth.login.title}</a>
-                                        </Button>
-                                        <Button asChild>
-                                            <a href={auth.signup.url}>{auth.signup.title}</a>
-                                        </Button>
-                                    </div>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            {showCart && (
+                <div
+                    className="hidden md:block absolute animate-out left-0 right-0 top-0 h-screen bg-black/20 z-[99]"
+                    onClick={() => setShowCart(!showCart)}
+                ></div>
+            )}
+
+            {showCart && <RemoveScroll> <Cart toggleShowCart={() => setShowCart(false)} /> </RemoveScroll>}
+        </>
     );
 };
 
@@ -206,6 +271,7 @@ const SubMenuLink = ({ item }) => {
                 )}
             </div>
         </a>
+
     );
 };
 
