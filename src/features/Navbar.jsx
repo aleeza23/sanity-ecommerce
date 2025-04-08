@@ -102,7 +102,7 @@ const Navbar = ({
                             <a href={'/'} className="flex items-center  gap-2">
                                 <Image src={'/logo.png'} alt="logo" width={130} height={130} />
                             </a>
-                            <div className="flex items-center">
+                            <div className="flex items-center flex-shrink-0">
                                 <NavigationMenu>
                                     <NavigationMenuList>
                                         {menu.map((item) => renderMenuItem(item))}
@@ -207,9 +207,9 @@ const Navbar = ({
 const renderMenuItem = (item) => {
     if (item.items) {
         return (
-            <NavigationMenuItem key={item.title}>
+            <NavigationMenuItem key={item.title} >
                 <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-popover text-popover-foreground">
+                <NavigationMenuContent className="bg-popover  text-popover-foreground">
                     {item.items.map((subItem) => (
                         <NavigationMenuLink asChild key={subItem.title} className="w-80">
                             <SubMenuLink item={subItem} />
